@@ -1,0 +1,11 @@
+PeopleTableIAM:
+  Effect: Allow
+  Action:
+    - dynamodb:PutItem
+    - dynamodb:Scan
+    - dynamodb:GetItem
+    - dynamodb:UpdateItem
+    - dynamodb:Query
+  Resource:
+    - ${self:custom.PeopleTable.arn}
+    - !Join ['/', [ '${self:custom.PeopleTable.arn}', 'index', 'genderAndCreated' ]]

@@ -1,0 +1,11 @@
+PlanetsTableIAM:
+  Effect: Allow
+  Action:
+    - dynamodb:PutItem
+    - dynamodb:Scan
+    - dynamodb:GetItem
+    - dynamodb:UpdateItem
+    - dynamodb:Query
+  Resource:
+    - ${self:custom.PlanetsTable.arn}
+    - !Join ['/', [ '${self:custom.PlanetsTable.arn}', 'index', 'populationAndCreated' ]]

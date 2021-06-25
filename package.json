@@ -1,0 +1,26 @@
+{
+  "name": "tc-rimac",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-bundle": "^4.1.0",
+    "aws-sdk": "^2.799.0"
+  },
+  "dependencies": {
+    "@middy/core": "^1.4.0",
+    "@middy/http-error-handler": "^1.4.0",
+    "@middy/http-event-normalizer": "^1.4.0",
+    "@middy/http-json-body-parser": "^1.4.0",
+    "@middy/validator": "^1.4.0",
+    "axios": "^0.21.1",
+    "http-errors": "^1.8.0",
+    "uuid": "^8.3.1"
+  }
+}

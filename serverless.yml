@@ -1,0 +1,54 @@
+service: tc-rimac
+frameworkVersion: '2'
+
+plugins:
+  - serverless-bundle
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+    PLANETS_TABLE_NAME: ${self:custom.PlanetsTable.name}
+    PEOPLE_TABLE_NAME: ${self:custom.PeopleTable.name}
+  iamRoleStatements:
+    - ${file(iam/PeopleTableIAM.yml):PeopleTableIAM}
+    - ${file(iam/PlanetsTableIAM.yml):PlanetsTableIAM}
+
+resources:
+  Resources:
+    PeopleTable: ${file(resources/PeopleTable.yml):PeopleTable}
+    PlanetsTable: ${file(resources/PlanetsTable.yml):PlanetsTable}  
+
+functions:
+  integrateData:
+    handler: src/handlers/integrateData.handler
+    events:
+      - http:
+          method: POST
+          path: /integrateData
+  getPeople:
+    handler: src/handlers/getPeople.handler
+    events:
+      - http:
+          method: get
+          path: /people
+  getPerson:
+    handler: src/handlers/getPerson.handler
+    events:
+      - http:
+          method: GET
+          path: /person/{id}
+
+custom:
+  authorizer: arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:auth-service-${self:provider.stage}-auth
+  PeopleTable:
+    name: !Ref PeopleTable
+    arn: !GetAtt PeopleTable.Arn
+  PlanetsTable:
+    name: !Ref PlanetsTable
+    arn: !GetAtt PlanetsTable.Arn
+  bundle:
+    linting: false          
